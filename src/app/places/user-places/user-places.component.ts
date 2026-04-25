@@ -5,6 +5,7 @@ import { PlacesComponent } from '../places.component';
 import { HttpBackend, HttpClient } from '@angular/common/http';
 import { Place } from '../place.model';
 import { catchError, map, throwError } from 'rxjs';
+import { PlacesService } from '../places.service';
 
 @Component({
   selector: 'app-user-places',
@@ -14,9 +15,14 @@ import { catchError, map, throwError } from 'rxjs';
   imports: [PlacesContainerComponent, PlacesComponent],
 })
 export class UserPlacesComponent implements OnInit{
-  places = signal<Place[] | undefined>(undefined);
+  //places = signal<Place[] | undefined>(undefined);
+
+  private placesService = inject(PlacesService);
   private httpClient = inject(HttpClient);
   private destroyRef = inject(DestroyRef);
+
+  places = this.placesService.loadedUserPlaces;
+
   isFetching = signal(false);
   error = signal('');
 
@@ -33,9 +39,6 @@ export class UserPlacesComponent implements OnInit{
         }
         ))
         .subscribe({
-          next: (places) => {
-            this.places.set(places);
-          },
           error: (error: Error) => {
             this.error.set(error.message);
   

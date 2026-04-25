@@ -36,7 +36,7 @@ app.get("/user-places", async (req, res) => {
 
   const places = JSON.parse(fileContent);
 
-  res.status(200).json({ places });
+  //res.status(200).json({ places });
 });
 
 app.put("/user-places", async (req, res) => {
